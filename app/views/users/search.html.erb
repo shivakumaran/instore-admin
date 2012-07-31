@@ -1,0 +1,79 @@
+<div class="row">
+  
+  <div class="span3 msi-head"><h4>Users</h4></div>
+  <div class="span6" style="text-align:right;">
+    <!-- <form class="form-search"> -->
+    <%= form_for :user, :url => search_users_path do %>
+      <div class="control-group">
+        <div class="controls">
+          <div class="input-append">
+            <!-- <input id="appendedInputButtons" placeholder="Users" type="text"> -->
+            <%= text_field_tag 'name' %>
+            <!-- <input type="submit" value="Search" class="btn btn-inverse" />  -->
+            <%#= submit_tag "Submit", :class => "btn btn-inverse" %>
+            <button type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i>&nbsp;Search</button>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <!-- </form>  -->
+  </div>
+  
+</div>
+
+<div class="msi-list">
+  <div class="row list-heading">
+    <div class="span2 controls">
+      <label class="checkbox inline">
+        <input id="toggleSelection" type="checkbox" value="toggle">
+        First Name
+      </label>
+    </div> 
+    <div class="span2">Last Name</div> 
+    <div class="span2">Username</div> 
+    <div class="span1">isAdmin</div> 
+    <div class="span1">Status</div> 
+    <div class="span1">Action</div> 
+  </div>
+  <% unless @paginated_users.blank? %>
+      <% @paginated_users.each do |user| %>
+          <div class="row">
+            <div class="span2 controls">
+              <label class="checkbox inline">
+                <input id="inlineCheckbox1" type="checkbox" value="option1">
+                <a href="#" alt="Click to view details" title="Click to view details"><%= user.first_name %></a>
+              </label>
+            </div> 
+            <div class="span2"><%= user.last_name %></div>
+            <div class="span2"><%= user.username %></div>
+            <div class="span1"><%= user.is_admin %></div>           
+            <div class="span1"><span class="status-active"><%= find_status(user) %></span></div>
+            <div class="span1">
+              <a href="#" alt="Edit User" title="Edit User"><i class="icon-edit"></i></a>
+              <a href="#" class="delete" alt="Delete User" title="Delete User"><i class="icon-trash"></i></a>
+              <a href="#" class="disable" alt="Disable User" title="Disable User"><i class="icon-ban-circle"></i></a>
+            </div> 
+          </div>
+       <% end %>  
+   <% else %>
+      Record Not Found       
+   <% end %>
+        					    
+  <div class="row actions">
+    <div class="span5">
+      <div class="control-group">
+        <div class="controls">
+          <select id="select01" style="margin-bottom: 0px;">
+            <option value="">Bulk Actions</option>
+            <option value="Delete">Delete</option>
+            <option value="Enable">Enable</option>
+            <option value="Disable">Disable</option>
+          </select>
+          <input type="submit" value="Apply" class="btn btn-inverse" />
+        </div>
+      </div>						
+    </div>
+    
+  </div>
+  
+</div>

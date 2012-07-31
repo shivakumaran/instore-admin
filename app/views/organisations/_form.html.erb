@@ -1,0 +1,111 @@
+<%= form_for @organisation,:html=>{:id=>"org-form"} do |f| %>
+<div class="row button-box top">
+	<div class="span9" style="text-align:right;">
+		<% unless @organisation.new_record%>
+			<button type="submit" class="btn btn-success"><i class="icon-edit icon-white"></i>&nbsp;Update</button>
+		<% else %>
+			<button type="submit" class="btn btn-success"><i class="icon-plus icon-white"></i>&nbsp;Add</button>
+		<% end %>
+		<a href="/organisations" class="btn btn-inverse"><i class="icon-remove icon-white"></i>&nbsp;Cancel</a>
+	</div>
+</div>	
+<div class="msi-list details-view">
+	<div class="alert alert-error" <% if @organisation.errors.any? %> style="display: block;" <% end %>>
+		<%= @organisation.errors.full_messages.join("<br/>").html_safe if @organisation.errors.any?%>
+	</div>	
+	
+	<div class="row">
+		<div class="span4">
+			Organization Name: 
+		</div>
+		
+		<div class="span4">
+			<%= f.text_field :name %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+			Address Line 1: 
+		</div>
+		<div class="span4">
+			<%= f.text_field :address1 %><br /><em class="note">Street address, P.O. box, company name, c/o</em>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+			Address Line 2: 
+		</div>
+		<div class="span4">
+			<%= f.text_field :address2 %><br /><em class="note">Apartment, suite, unit, building, floor etc</em>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+			City: 
+		</div>
+		<div class="span4">
+			<%= f.text_field :city %>
+		</div>
+	</div>			
+	<div class="row">
+		<div class="span4">
+			State: 
+		</div>
+		<div class="span4">
+			<%= f.text_field :state %>
+		</div>
+	</div>		
+	<div class="row">
+		<div class="span4">
+			Zip: 
+		</div>
+		<div class="span4">
+			<%= f.text_field :zip %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+			Country: 
+		</div>
+		<div class="span4">
+			<%= f.country_select :country,["United States","India"]%>
+		</div>
+	</div>						
+	<div class="row">
+		<div class="span4">
+			Business Phone Number: 
+		</div>
+		<div class="span4">
+			<%= f.text_field :business_phone_number %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+			Domain: 
+		</div>
+		<div class="span4">
+			<%= f.text_field :domain %>
+		</div>
+	</div>
+	<% unless @organisation.new_record%>
+		<div class="row">
+			<div class="span4">
+				Disabled 
+			</div>
+			<div class="span4">
+				<%= f.check_box :disabled %>
+			</div>
+		</div>
+	<% end %>
+</div>
+<div class="row button-box bottom">
+	<div class="span9" style="text-align:right;">
+		<% unless @organisation.new_record%>
+			<button type="submit" class="btn btn-success"><i class="icon-edit icon-white"></i>&nbsp;Update</button>
+		<% else %>
+			<button type="submit" class="btn btn-success"><i class="icon-plus icon-white"></i>&nbsp;Add</button>
+		<% end %>
+		<a href="/organisations" class="btn btn-inverse"><i class="icon-remove icon-white"></i>&nbsp;Cancel</a>
+	</div>
+</div>
+<% end %>

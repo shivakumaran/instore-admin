@@ -1,0 +1,27 @@
+  <div class="row">
+    <div class="span9 msi-head"><h4>Dashboard</h4></div>
+  </div>    
+
+
+<% unless @venue_checkin.blank? %>
+  <div class="msi-list details-view">
+    <div class="row list-heading">       
+      <div class="span2">Venue</div> 
+      <div class="span1">Tip count</div> 
+      <div class="span2">Total Checkins</div> 
+      <div class="span2">Users count</div>
+      <div class="span2">Here now</div>
+    </div>
+   <% @venue_checkin.each do|venue| %>          
+      <div class="row">                    
+        <div class="span2"><%= venue[0].name %></div>
+        <div class="span1"><%= venue[1]['response']['venue']['stats']['tipCount'] %></div>      
+        <div class="span2"><%= venue[1]['response']['venue']['stats']['checkinsCount'] %></div>
+        <div class="span2"><%= venue[1]['response']['venue']['stats']['usersCount'] %></div>
+        <div class="span2"><%= venue[1]['response']['venue']['hereNow']['count'] %></div>         
+      </div>                                                                
+   <% end %>
+  </div>
+<% else %>
+    <div class="alert alert-error" style="display:block">Record Not Found</div>
+<% end %>

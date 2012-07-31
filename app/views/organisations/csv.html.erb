@@ -1,0 +1,29 @@
+<script tyep="text/javascript">
+  $(document).ready(function () { 
+    //function Validate(){
+       var reward_plus_flag = document.getElementById('organisation_is_enabled_reward_plus').checked;
+       var foursquare_flag = document.getElementById('organisation_is_enabled_foursquare').checked;       
+       if(reward_plus_flag == false && foursquare_flag == false){
+        alert("Please select at least one check box");
+       }
+    //}
+  });
+</script>
+<%= flash[:notice] unless flash[:notice].blank? %>
+<div id="csv_container" style="border: 1px solid green; height 400px; width: 300px; float: left; padding: 10px;">
+    <p>Import CSV File</p>
+    <%= form_for :organisation, :url=>{:controller=> "organisations", :action =>"upload"}, :html => { :multipart => true } do |f| -%>  
+        <%= f.file_field :csv %>
+        <%= f.submit "Upload", :disable_with => 'Uploading CSV File Please Keep patience...' %>
+    <% end -%>
+</div>
+
+<div id="general_settings" style="border: 1px solid green; height 400px; width: 300px; float: right; padding: 10px;">
+    <p>General Settings</p>
+    <p>Please change your Enable / Disable Settings for FourSquare or Reward Plus Application</p>
+    <%= form_for :organisation, :url=>{:controller=> "organisations", :action =>"update_enable", :id => @organisation.id} do |f| -%>                  
+        <%= f.check_box :is_enabled_foursquare %>&nbsp;&nbsp;&nbsp;Foursquare<br/>      
+        <%= f.check_box :is_enabled_reward_plus %>&nbsp;&nbsp;&nbsp;Reward Plus Application<br/><br/>     
+        <%= f.submit "Update Settings" %>     
+    <% end -%>
+</div>

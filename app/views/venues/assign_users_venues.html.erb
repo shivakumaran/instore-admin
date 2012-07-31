@@ -1,0 +1,134 @@
+<%= form_tag ({:action=>"update_users_venues",:id=>@venue, :method => 'post'}) do %>
+<!--
+				<div class="row">
+					<div class="span9 msi-head"><h4>Assign Users to Venues</h4></div>
+				</div>
+				
+				<div class="users-list">
+					<div class="row">
+						<div class="span9">
+						      <label class="checkbox inline">
+						        <input type="checkbox" value="">
+						        &nbsp;Jacob Nelson
+						      </label>
+						      <label class="checkbox inline assigned">
+						        <input type="checkbox" value="" checked>
+						        &nbsp;Anup Sreekumar
+						      </label>      
+						      <label class="checkbox inline">
+						        <input type="checkbox" value="">
+						        &nbsp;Jayakumar M
+						      </label>
+						      <label class="checkbox inline">
+						        <input type="checkbox" value="">
+						        &nbsp;Lourdhuraju Periyathambi
+						      </label>      
+						      <label class="checkbox inline">
+						        <input type="checkbox" value="">
+						        &nbsp;Vikas Korikkar
+						      </label>
+						      <label class="checkbox inline">
+						        <input type="checkbox" value="">
+						        &nbsp;Anup Shrivastaw
+						      </label>      
+						      <label class="checkbox inline">
+						        <input type="checkbox" value="">
+						        &nbsp;SHIVAKUMARAN m
+						      </label>
+						      <label class="checkbox inline assigned">
+						        <input type="checkbox" value="" checked>
+						        &nbsp;Vivek Veerappa
+						      </label>      
+						      <label class="checkbox inline">
+						        <input type="checkbox" value="">
+						        &nbsp;Satish Babu
+						      </label>
+						      <label class="checkbox inline assigned">
+						        <input type="checkbox" value="" checked>
+						        &nbsp;Augustine P A
+						      </label>      
+						      <label class="checkbox inline">
+						        <input type="checkbox" value="">
+						        &nbsp;Krupa Gururaj
+						      </label>
+						      <label class="checkbox inline">
+						        <input type="checkbox" value="">
+						        &nbsp;Suresh Samanthapudi
+						      </label>      
+						      <label class="checkbox inline">
+						        <input type="checkbox" value="">
+						        &nbsp;Doularam Choudhary
+						      </label>
+						</div>
+						
+					</div>
+					
+				</div>	
+-->
+				<!-- END of users-list div -->
+<table>
+	<tr>
+		<td colspan="3" class="msi-head"><h4>Assign Users to Venues</h4></td>
+	</tr>
+	<tr>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>
+			<%= select_tag "available_users", options_from_collection_for_select(@curr_user.organisation.users.delete_if{|u|@venue.users.include?(u)}, 'id', 'display_name'), :multiple => true, :size=>12, :id=>"available_users" %>
+		</td>
+		<td>
+			<a href="javascript:void(0)" class="add_all">&gt;&gt;</a><br/>
+			<a href="javascript:void(0)" class="add_selected">&gt;</a><br/>
+			<a href="javascript:void(0)" class="remove_selected">&lt;</a><br/>
+			<a href="javascript:void(0)" class="remove_all">&lt;&lt;</a>
+		</td>
+		<td>
+			<%= select_tag "users", options_from_collection_for_select(@venue.users, 'id', 'display_name'), :multiple => true, :size=>12, :id=>"selected_users" %>
+		</td>		
+	</tr>
+	<tr>
+		<td class="aright" colspan="3">
+			<button type="submit" class="btn btn-success"><i class="icon-ok icon-white"></i>&nbsp;Save</button>			
+		</td>
+	</tr>
+</table>
+
+<% end %>
+<script type="text/javascript">
+	$(document).ready(function(){
+		//add all users
+		$('.add_all').click(function(){
+			$('#available_users option').each(function(){
+				$(this).remove().appendTo('#selected_users');
+			});			
+		});
+		
+		//add selected
+		$('.add_selected').click(function(){
+			$('#available_users option:selected').each(function(){
+				$(this).remove().appendTo('#selected_users');
+			});			
+		});		
+		
+		//remove selected users
+		$('.remove_selected').click(function(){
+			$('#selected_users option:selected').each(function(){
+				$(this).remove().appendTo('#available_users');
+			});			
+		});		
+		
+		//remove all users
+		$('.remove_all').click(function(){
+			$('#selected_users option').each(function(){
+				$(this).remove().appendTo('#available_users');
+			});			
+		});
+		
+		$('form').submit(function(){
+	    $('#selected_users option').each(function(i){
+	        $(this).attr("selected", "selected");
+	    });			
+		});
+	})
+</script>

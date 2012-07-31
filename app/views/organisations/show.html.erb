@@ -1,0 +1,152 @@
+<!--
+<p>
+  <b>Created at:</b> -->
+  <%#= @organisation.created_at %>
+<!-- </p> 
+
+<p>
+  <b>Updated at:</b> -->
+  <%#= @organisation.updated_at %>
+<!-- </p> -->
+
+
+
+				<div class="row">
+					<div class="span9 msi-head"><h4><%= @organisation.name %></h4></div>
+				</div>
+				
+				<div class="row button-box top">
+					<div class="span9" style="text-align:right;">						
+                                                <%= link_to '<i class="icon-edit icon-white"></i>&nbsp;Edit'.html_safe,  edit_organisation_path(@organisation), :class => "btn btn-success", :alt => "Edit Organisation", :title => "Edit Organisation" %>
+                                                <%
+							if(@organisation.disabled)
+								title = 'Enable'
+								activeClass = 'btn-success'
+							else
+								title = 'Disable'
+								activeClass = 'btn-warning'
+							end
+							
+						%>
+						<!-- <a href="#" class="btn btn-warning disable"><i class="icon-ban-circle icon-white"></i>&nbsp;Disable</a> -->
+                                                <%= link_to "<i class='icon-ban-circle icon-white'></i>&nbsp;#{title}".html_safe, organisation_path(@organisation,"organisation[disabled]"=>@organisation.disabled ? false : true), :class => "btn #{activeClass}", :confirm => "Are you sure you want to #{@organisation.disabled ? 'enable' : 'disable' }" , :method => :put, :alt=>"#{title} Organisation", :title=>"#{title} Organisation" %>
+						<!-- <a href="#" class="btn btn-danger delete"><i class="icon-trash icon-white"></i>&nbsp;Delete</a>  -->
+                                                <%= link_to '<i class="icon-trash icon-white"></i>&nbsp;Delete'.html_safe, organisation_path(@organisation,"organisation[archive]"=>true), :class => "btn btn-danger", :confirm => 'Are you sure you want to delete?', :method => :delete, :alt=>"Delete Organization", :title=>"Delete Organization" %>
+					</div>
+				</div>	
+				<div class="msi-list details-view">
+					<div class="row">
+						<div class="span4">
+							Address: 
+						</div>
+						
+						<div class="span4">
+							<%= @organisation.address1 %><br />
+							<%= @organisation.address2 %>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span4">
+							City: 
+						</div>
+						<div class="span4">
+							<%= @organisation.city %>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span4">
+							State: 
+						</div>
+						<div class="span4">
+							<%= @organisation.state %>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span4">
+							Zip: 
+						</div>
+						<div class="span4">
+							<%= @organisation.zip %>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span4">
+							Country: 
+						</div>
+						<div class="span4">
+							<%= @organisation.country %>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span4">
+							Phone: 
+						</div>
+						<div class="span4">
+							<%= @organisation.business_phone_number %>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span4">
+							Domain: 
+						</div>
+						<div class="span4">
+							<%= @organisation.domain %>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span4">
+							Status: 
+						</div>
+						<div class="span4">
+							<% if @organisation.disabled %>
+								<span class="status-inactive">Inactive</span>
+							<% else %>
+								<span class="status-active">Active</span>
+							<% end %>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span4">
+							No. of administrators: 
+						</div>
+						<div class="span4">
+							<span class="status-inactive"><%= @organisation.no_of_admin%></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span4">
+							No. of Sales Assistants: 
+						</div>
+						<div class="span4">
+							<span class="status-inactive"><%= @organisation.no_of_users%></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span4">
+							No. of Venues: 
+						</div>
+						<div class="span4">
+							<span class="status-inactive"><%= @organisation.venues.count%></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span4">
+							Online users: 
+						</div>
+						<div class="span4">
+							<span class="status-inactive">Show this details</span>
+						</div>
+					</div>
+					
+				</div>	<!-- END of msi-list div -->
+				<div class="row button-box bottom">
+					<div class="span9" style="text-align:right;">
+						<%= link_to '<i class="icon-edit icon-white"></i>&nbsp;Edit'.html_safe,  edit_organisation_path(@organisation), :class => "btn btn-success", :alt => "Edit Organisation", :title => "Edit Organisation" %>
+						<!-- <a href="#" class="btn btn-warning disable"><i class="icon-ban-circle icon-white"></i>&nbsp;Disable</a> -->
+                                                <%= link_to "<i class='icon-ban-circle icon-white'></i>&nbsp;#{title}".html_safe, organisation_path(@organisation,"organisation[disabled]"=>@organisation.disabled ? false : true), :class => "btn #{activeClass}", :confirm => "Are you sure you want to #{@organisation.disabled ? 'enable' : 'disable' }" , :method => :put, :alt=>"#{title} Organisation", :title=>"#{title} Organisation" %>
+						<!-- <a href="#" class="btn btn-danger delete"><i class="icon-trash icon-white"></i>&nbsp;Delete</a>  -->
+                                                <%= link_to '<i class="icon-trash icon-white"></i>&nbsp;Delete'.html_safe, organisation_path(@organisation,"organisation[archive]"=>true), :class => "btn btn-danger", :confirm => 'Are you sure you want to delete?', :method => :delete, :alt=>"Delete Organization", :title=>"Delete Organization" %>
+					</div>
+				</div>					
+			
+

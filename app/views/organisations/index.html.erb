@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="span4 msi-head"><h4>Organizations</h4></div>
+	<%= render :partial=>"partials/search"%>
+</div>
+  <!-- Error Message Block -->
+<div class="row">
+  <div class="span8 alert alert-error"></div>
+</div>
+<% unless @organisations.blank? %>
+<div class="msi-list details-view">
+  <div class="row list-heading">
+    <div class="span2 controls">
+      <label class="checkbox inline">
+        <input id="toggleSelection" type="checkbox" value="toggle">
+        Name
+      </label>
+    </div> 
+    <div class="span2">Address</div> 
+    <div class="span2">Status</div> 
+    <div class="span2">Last Updated</div> 
+    <div class="span1">Action</div> 
+  </div>
+  <%= form_for :organisation, :url => bulk_action_organisations_path, :html => {:id => 'list-view'} do %>      
+      <% @organisations.each do |organisation| %>           
+        <div class="row">
+          <div class="span2 controls">
+            <label class="checkbox inline">
+              <%= check_box_tag "organisation[organisation_ids][]", organisation.id, false, :name => "organisation[organisation_ids][]" %>
+              <%= link_to organisation.name, organisation,  :alt=>"Click to view details", :title=>"Click to view details" %>
+            </label>
+          </div> 
+          <div class="span2">
+            <%= organisation.display_address.join('<br/>').html_safe %>
+          </div>
+          <div class="span2"><span class="status-<%= organisation.status.downcase %>"><%= organisation.status %></span></div>
+          <div class="span2"><%= organisation.updated_at %></div>
+          <div class="span1">
+            <%= link_to '<i class="icon-edit"></i>'.html_safe, edit_organisation_path(organisation), :alt=>"Edit Organization", :title=>"Edit Organization" %>
+            <%= link_to '<i class="icon-trash"></i>'.html_safe, organisation_path(organisation,"organisation[archive]"=>true), :confirm => 'Are you sure you want to delete?', :method => :delete, :alt=>"Delete Organization", :title=>"Delete Organization" %>
+            <% title = organisation.disabled ? 'Enable' : 'Disable' %>
+            <%= link_to '<i class="icon-ban-circle"></i>'.html_safe, organisation_path(organisation,"organisation[disabled]"=>organisation.disabled ? false : true), :confirm => "Are you sure you want to #{organisation.disabled ? 'enable' : 'disable' }" , :method => :put, :alt=>"#{title} Organization", :title=>"#{title} Organization" %>
+          </div> 
+        </div>            
+      <% end %>  
+    <div class="row actions">
+      <div class="span5">
+        <div class="control-group">
+          <div class="controls">
+            <%= select_tag :bulk_actions, options_for_select([["Bulk Actions", ""], "Delete", "Enable", "Disable"]) %>                          
+            <input type="submit" value="Apply" class="btn btn-inverse" id="apply" />
+          </div>
+        </div>						
+      </div>
+      <div class="span4 aright">
+        <div class="pagination">
+          <ul>            
+            <li class="active">
+              <%= will_paginate @paginated_organisations, :previous_label => '&laquo;', :next_label => '&raquo;', :params=>{:search=>params[:search].to_s} %>
+            </li>            
+          </ul>
+        </div>						
+      </div>
+    </div>	
+  <% end %>
+<% else %>
+   <div class="alert alert-error" style="display:block">Record Not Found</div>  
+<% end %>
+</div>

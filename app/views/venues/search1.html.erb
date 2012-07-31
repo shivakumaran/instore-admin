@@ -1,0 +1,167 @@
+
+
+<% if flash[:message] || flash[:error]%>
+		<div class="alert alert-error">
+			<% if flash[:message] %>
+				<%= flash[:message] %>
+				<% flash[:message] = nil %>
+			<% end %>
+			<% if flash[:error] %>
+				<%= flash[:error] %>
+				<% flash[:error] = nil %>
+			<% end %>
+		</div>		
+		<% end %>
+<script src="http://www.google.com/jsapi" language="javascript"></script>
+<script type="text/javascript">
+ 
+        
+$(document).ready(function(){
+
+     
+    $('#map_canvas').gmap({'maxZoom':15}).bind('init', function(event, map) { 
+    	
+	$(map).click( function(event) {
+		$('#map_canvas').gmap('clear', 'markers');
+		latlang= new String(event.latLng);
+		$('#map_canvas').gmap('addMarker', {
+			'position': event.latLng, 
+			'draggable': true, 
+			'bounds': false
+		}, function(map, marker) {
+			$("#search_latitude").val(latlang.split(",")[0].split("(")[1]);
+			$("#search_longitude").val($.trim(latlang.split(",")[1].split(")")[0]));
+			
+			findLocation(marker.getPosition(), marker);
+			
+		}).dragend( function(event) {
+			findLocation(event.latLng, this);
+		}).click( function(event) {
+			
+		})
+	});
+});
+
+function findLocation(location, marker) {
+	$('#map_canvas').gmap('search', {'location': location}, function(results, status) {
+		if ( status === 'OK' ) {
+			$.each(results[0].address_components, function(i,v) {
+				if ( v.types[0] == "administrative_area_level_1" || 
+					 v.types[0] == "administrative_area_level_2" ) {
+					$('#state'+marker.__gm_id).val(v.long_name);
+				} else if ( v.types[0] == "country") {
+					$('#country'+marker.__gm_id).val(v.long_name);
+				}
+			});
+			$("#search_near").val(results[0].formatted_address);
+			
+			marker.setTitle(results[0].formatted_address);
+			$('#address'+marker.__gm_id).val(results[0].formatted_address);
+			
+		}
+	});
+}
+
+$('#map_canvas').gmap('getCurrentPosition', function(position, status) {
+	if ( status === 'OK' ) {
+		
+		var clientPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		
+		$("#search_latitude").val(position.coords.latitude);
+		$("#search_longitude").val(position.coords.longitude);
+		$('#map_canvas').gmap('addMarker', {'position': clientPosition, 'bounds': true});
+		
+	}
+});
+});
+</script>
+	<div id="map_canvas" style="width:680px;height:300px"></div>
+
+	
+
+<p></p>
+
+<%= form_tag search_venues_path, :method => 'post' do %>
+<p>
+<%value=params[:search].blank? ? "" : params[:search][:query]%>
+	Result For:<%= text_field :search,:query ,:value=>value%>
+	Near :<%= text_field :search, :near,:value=> params[:search].blank? ? "" : params[:search][:near]%>
+	<%= submit_tag "Search", :name => nil %>
+</p>
+<% end %>
+<%= form_tag search_venues_path, :method => 'post' do %>
+<p>
+	Latitude :<%= text_field :search,:latitude ,:value=> params[:search].blank? ? "" : params[:search][:latitude]%>
+	Longitude :<%= text_field :search, :longitude,:value=> params[:search].blank? ? "" : params[:search][:longitude] %>
+	<%= submit_tag "Search", :name => nil %>
+</p>
+<% end %>
+<%= form_tag search_venues_path, :method => 'post' do %>
+<p>
+	VenueId :<%= text_field :search,:venue_id ,:value=> params[:search].blank? ? "" : params[:search][:venue_id]%>
+
+	<%= submit_tag "Search", :name => nil %>
+</p>
+<% end %>
+<%= form_for(@venue) do |f| %>
+<%if @parsed_json!=nil%>
+	<%if @parsed_json["response"]["venues"]!=nil%>
+	<table><th>Name</th><th>Venue Id</th><th>address</th><th>city</th><th>country</th><th>state</th>
+		<%for parsed_res in @parsed_json["response"]["venues"]%>
+		<tr>
+						<td align="center">
+							
+							<%= parsed_res["name"] %>
+						</td>
+						<td>
+							
+							<%= parsed_res["id"] %>
+						</td>
+						
+							<td align="center"><%=parsed_res["location"]["address"]%></td>
+							<td align="center"><%=parsed_res["location"]["city"]%></td>
+							<td align="center"><%=parsed_res["location"]["state"]%></td>
+							<td align="center"><%=parsed_res["location"]["state"]%></td>
+							<%address=""%>
+						    <%address=parsed_res["location"]["address"]+" " if (parsed_res["location"]["address"]!=nil)%>
+						    <%address+=parsed_res["location"]["city"]+" " if (parsed_res["location"]["city"]!=nil)%>
+						    <%address+=parsed_res["location"]["state"]+" " if (parsed_res["location"]["state"]!=nil)%>
+						    <%address+=parsed_res["location"]["country"]+" " if (parsed_res["location"]["country"]!=nil)%>
+						    <td align="center"><%=check_box_tag 'venue[ids]_'+parsed_res["id"], parsed_res["name"]+"(#{address})", false%></td>
+		</tr>				
+	
+		<%end%>
+		</table>
+	<div class="actions">
+    <%= f.submit %>
+  </div>
+	<%elsif @parsed_json["response"]["venue"]!=nil%>
+	<p>
+		<b>Name:</b>
+		<%= @parsed_json["response"]["venue"]["name"] %>
+	</p>
+	<p>
+		<b>Id:</b>
+		<%= @parsed_json["response"]["venue"]["id"] %>
+	</p>
+	<p>
+		<b>Location:</b>
+		<% @parsed_json["response"]["venue"]["location"].keys.collect do|k| %>
+	<p>
+		<%= k+": "+@parsed_json["response"]["venue"]["location"][k].to_s%>
+	</p>
+		<%end%>
+		<%address=""%>
+						    <%address=@parsed_json["response"]["venue"]["address"]+" " if (@parsed_json["response"]["venue"]["address"]!=nil)%>
+						    <%address+=@parsed_json["response"]["venue"]["city"]+" " if (@parsed_json["response"]["venue"]["city"]!=nil)%>
+						    <%address+=@parsed_json["response"]["venue"]["state"]+" " if (@parsed_json["response"]["venue"]["state"]!=nil)%>
+						    <%address+=@parsed_json["response"]["venue"]["country"]+" " if (@parsed_json["response"]["venue"]["country"]!=nil)%>
+						    <p><%=check_box_tag 'venue[ids]_'+@parsed_json["response"]["venue"]["id"], @parsed_json["response"]["venue"]["name"]+"(#{address})", false%></p>
+	<div class="actions">
+    <%= f.submit %>
+  </div>
+	<%end%>
+	
+	<%end%>
+	
+	<% end %>	

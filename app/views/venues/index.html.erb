@@ -1,0 +1,78 @@
+
+<div class="row">
+  <div class="span3  msi-head"><h4>Venues</h4></div>
+  <%= render :partial=>"partials/search"%>    
+</div>
+  <!-- Error Message Block -->
+<div class="row">
+  <div class="span8 alert alert-error"></div>
+</div>
+<% unless @venues.blank? %>
+<% divWidth = @curr_user.is_admin ? "span2": "span3" %>
+<div class="msi-list details-view">
+  <div class="row list-heading">
+    <div class="<%= divWidth %> controls">
+      <label class="checkbox inline">
+        <input id="toggleSelection" type="checkbox" value="toggle">
+        Name
+      </label>
+    </div> 
+    <div class="span2">Address</div> 
+    <div class="span1">Status</div> 
+    <div class="span3">AccessCode</div> 
+    <% if @curr_user.is_admin %>
+    	<div class="span1">Action</div>
+    <% end %> 
+    
+  </div>
+  <%= form_for :venue, :url => bulk_action_venues_path, :html => {:id => 'list-view'} do %>
+    
+         <% @venues.each do |venue| %>            
+              <div class="row">
+                <div class="<%= divWidth %> controls">
+                  <label class="checkbox inline">
+                    <%= check_box_tag "venue[venue_ids][]", venue.id, false, :name => "venue[venue_ids][]" %>
+                    <a href="#" alt="Click to view details" title="Click to view details">
+                        <% unless venue.name.blank? %>
+                            <%= link_to "#{venue.name}", venue_path(venue) %>                        
+                        <% end %>
+                    </a>
+                  </label>
+                </div> 
+                <div class="span2"><%= venue.address %></div>
+
+				
+
+                <div class="span1">
+                	<span class="status-<%= venue.status.downcase %>"><%= venue.status %></span>
+                </div>
+                <div class="span3"><%= venue.access_code %></div>
+                <%if @curr_user.is_admin%>
+                <div class="span1">
+                	<%if @curr_user.is_admin?%>
+                	<%= link_to '<i class="icon-ok"></i>'.html_safe, {:action=>:assign_users_venues,:id=>venue}, :alt=>"Assign Venue", :title=>"Assign Venue" %>
+                	<%= link_to '<i class="icon-trash"></i>'.html_safe, venue, :confirm => 'Are you sure?', :method => :delete, :alt=>"Delete Venue", :title=>"Delete Venue" %>
+                  <%end%>
+                </div>
+                <%end%>
+              </div>
+            <% end %>               
+                                                
+    <div class="row actions">
+      <div class="span5">
+        <div class="control-group">
+          <div class="controls">
+            <%= select_tag :bulk_actions, options_for_select([["Bulk Actions", ""], "Delete", "Enable", "Disable"]) %>               
+            <input type="submit" value="Apply" class="btn btn-inverse" id="apply" />
+          </div>
+        </div>						
+      </div>
+      <div class="span4 aright">
+        <%= will_paginate @venues, :previous_label => '&laquo;', :next_label => '&raquo;', :inner_window => 2, :outer_window => -1 %>					
+      </div>
+    </div>
+  <% end %>
+<% else %>
+   <div class="alert alert-error" style="display:block">Record Not Found</div>
+<% end %>
+</div>

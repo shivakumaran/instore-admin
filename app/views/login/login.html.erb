@@ -1,0 +1,55 @@
+<%= form_tag url_for(:action => 'do_login'),:id => 'login-form' do %>
+<div class="container">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<span class="brand">InStore</span>
+			</div>
+		</div>
+	</div>
+	<div class="span4 login-box">
+		<div class="alert alert-error" <% if flash[:message] || flash[:error] %> style="display: block;"<% end %>>
+			<% if flash[:message] %>
+				<%= flash[:message] %>
+				<% flash[:message] = nil %>
+			<% end %>
+			<% if flash[:error] %>
+				<%= flash[:error] %>
+				<% flash[:error] = nil %>
+			<% end %>
+		</div>		
+		
+		
+		<div class="row" style="padding-bottom:10px;">
+			<div class="span3">
+				<span class="label label-inverse">Sign in to MSI</span>
+			</div>
+		</div>			
+		<div class="row">
+			<div class="span3">
+				User Name
+			</div>
+		</div>
+		<div class="row">
+			<div class="span3">
+				<input type="text" name="user[username]" id="uid" placeholder="User Name" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="span3">
+				Password
+			</div>
+		</div>
+		<div class="row">
+			<div class="span3">
+				<input type="password" name="user[clear_password]" id="passwd" placeholder="Password" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="span3 aright">
+				<input type="submit" name="login" id="login" value="Login" class="btn btn-danger" />
+			</div>
+		</div>		
+	</div>
+</div>
+<% end %>

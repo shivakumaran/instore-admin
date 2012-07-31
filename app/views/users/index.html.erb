@@ -1,0 +1,70 @@
+<div class="row">  
+  <div class="span3 msi-head"><h4>Users</h4></div>
+  <%= render :partial=>"partials/search"%>   
+</div>
+  <!-- Error Message Block -->
+<div class="row">
+  <div class="span8 alert alert-error"></div>
+</div>
+
+<% unless @users.blank? %>
+  <div class="msi-list details-view">
+    <div class="row list-heading">
+      <div class="span4 controls">
+        <label class="checkbox inline">
+          <input id="toggleSelection" type="checkbox" value="toggle">
+          Name
+        </label>
+      </div> 
+      <div class="span2">Username</div> 
+      <% unless @curr_user.is_super_admin %><div class="span1"> isAdmin</div><% end %> 
+      <div class="span1">Status</div> 
+      <div class="span1">Action</div> 
+    </div>
+    <%= form_for :user, :url => bulk_action_users_path, :html => {:id => 'list-view'} do %>    
+            <% @users.each do |user| %>          
+        <div class="row">          
+          <div class="span4 controls">
+            <label class="checkbox inline">
+              <%#= check_box_tag('numbers[]', value = user.id) %>
+              <%= check_box_tag "user[user_ids][]", user.id, false, :name => "user[user_ids][]" %>
+              <!-- <input id="inlineCheckbox1" type="checkbox" value="option1">  -->
+              <%= link_to user.display_name, user%>
+            </label>
+          </div> 
+          <div class="span2"><%= user.username %></div>
+          <% unless @curr_user.is_super_admin %>
+          	<div class="span1"><%= user.is_admin ? 'Yes' : 'No' unless @curr_user.is_super_admin %></div>
+          <% end %>           
+          <div class="span1">
+          <span class="status-<%= user.status.downcase %>"><%= user.status %></span></div>
+          <div class="span1">  
+            <%= link_to "", edit_user_path(user), :class => "icon-edit", :alt => "Edit User", :title => "Edit User" %>
+            <%= link_to '<i class="icon-trash"></i>'.html_safe, user_path(user), :confirm => 'Are you sure you want to delete?', :method => :delete, :alt=>"Delete User", :title=>"Delete User" %>
+            <% title = user.disabled ? 'Enable' : 'Disable' %>
+            <%= link_to '<i class="icon-ban-circle"></i>'.html_safe, user_path(user,"user[disabled]"=>user.disabled ? false : true), :confirm => "Are you sure you want to #{user.disabled ? 'enable' : 'disable' }" , :method => :put, :alt=>"#{title} User", :title=>"#{title} User" %>
+            <!-- <a href="#" alt="Edit User" title="Edit User"><i class="icon-edit"></i></a>  -->              
+            <!-- <a href="#" class="delete" alt="Delete User" title="Delete User"><i class="icon-remove-sign"></i></a> -->
+                      <!-- <a href="#" class="disable" alt="Disable User" title="Disable User"><i class="icon-ban-circle"></i></a> -->
+          </div> 
+        </div>          
+      <% end %>       
+                                           
+      <div class="row actions">
+        <div class="span5">
+          <div class="control-group">
+            <div class="controls">         
+              <%= select_tag :bulk_actions, options_for_select([["Bulk Actions", ""], "Delete", "Enable", "Disable"]) %>               
+              <input type="submit" value="Apply" class="btn btn-inverse" id="apply" />          
+            </div>
+          </div>						
+        </div>
+        <div class="span4 aright">      
+            <%= will_paginate @users, :previous_label => '&laquo;', :next_label => '&raquo;', :params=>{:search=>params[:search].to_s} %>
+        </div>
+      </div>
+    <% end %>
+<% else %>
+    <div class="alert alert-error" style="display:block">Record Not Found</div>
+<% end %>
+</div>

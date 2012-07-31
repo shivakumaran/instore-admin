@@ -1,0 +1,88 @@
+<div class="row">
+  <div class="span9 msi-head"><h4><%= @user.first_name %> <%= @user.last_name %></h4></div>
+</div>
+
+<div class="row button-box top">
+  <div class="span9" style="text-align:right;">
+    <%= link_to '<i class="icon-edit icon-white"></i>&nbsp;Edit'.html_safe,  edit_user_path(@user), :class => "btn btn-success", :alt => "Edit User", :title => "Edit User" %>    
+    <% if @curr_user.username != @user.username %>
+      <%
+              if(@user.disabled)
+                        title = 'Enable'
+                        activeClass = 'btn-success'
+              else
+                        title = 'Disable'
+                        activeClass = 'btn-warning'
+              end
+
+      %>
+      <%# title = @user.disabled ? 'Enable' : 'Disable' %>
+      <%= link_to "<i class='icon-ban-circle icon-white'></i>&nbsp;#{title}".html_safe, user_path(@user,"user[disabled]"=>@user.disabled ? false : true), :class => "btn #{activeClass}", :confirm => "Are you sure you want to #{@user.disabled ? 'enable' : 'disable' }" , :method => :put, :alt=>"#{title} User", :title=>"#{title} User" %>
+      <%= link_to '<i class="icon-trash icon-white"></i>&nbsp;Delete'.html_safe, user_path(@user,"user[archive]"=>true), :class => "btn btn-danger", :confirm => 'Are you sure you want to delete?', :method => :put, :alt=>"Delete User", :title=>"Delete User" %></div>
+   <% end %>
+</div>	
+<div class="msi-list details-view">
+  <div class="row">
+    <div class="span4">
+      First Name: 
+    </div>
+    
+    <div class="span4">
+      <%= @user.first_name %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span4">
+      Last Name: 
+    </div>
+    <div class="span4">
+      <%= @user.last_name %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span4">
+      Phone: 
+    </div>
+    <div class="span4">
+      <%= contact_number(@user) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span4">
+      username: 
+    </div>
+    <div class="span4">
+      <%= @user.username %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span4">
+      Status: 
+    </div>
+    <div class="span4">
+      <% if @user.disabled %>
+        <span class="status-inactive">Inactive</span>
+      <% else %>
+        <span class="status-active">Active</span>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span4">
+      Is Administrator: 
+    </div>
+    <div class="span4">
+      <%= @user.is_admin ? "Yes" : "No" %>
+    </div>
+  </div>
+  
+</div>	<!-- END of msi-list div -->
+<div class="row button-box bottom">
+  <div class="span9" style="text-align:right;">    
+   <%= link_to '<i class="icon-edit icon-white"></i>&nbsp;Edit'.html_safe,  edit_user_path(@user), :class => "btn btn-success", :alt => "Edit User", :title => "Edit User" %>
+   <% if @curr_user.username != @user.username %>
+        <%= link_to "<i class='icon-ban-circle icon-white'></i>&nbsp;#{title}".html_safe, user_path(@user,"user[disabled]"=>@user.disabled ? false : true), :class => "btn #{activeClass}", :confirm => "Are you sure you want to #{@user.disabled ? 'enable' : 'disable' }" , :method => :put, :alt=>"#{title} User", :title=>"#{title} User" %>
+        <%= link_to '<i class="icon-trash icon-white"></i>&nbsp;Delete'.html_safe, user_path(@user,"user[archive]"=>true), :class => "btn btn-danger", :confirm => 'Are you sure you want to delete?', :method => :put, :alt=>"Delete Organization", :title=>"Delete User" %>    
+   <% end %>
+  </div>
+</div>					

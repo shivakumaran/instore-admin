@@ -1,0 +1,90 @@
+<%= form_for @user, :html => { :method => "put", :id => "user-form"} do |f| %>
+				<div class="row">
+					<div class="span9 msi-head"><h4>Jacob Nelson</h4></div>
+				</div>
+				
+				<div class="row button-box top">
+					<div class="span9" style="text-align:right;">
+						<!-- <a href="#" class="btn btn-success update"><i class="icon-edit icon-white"></i>&nbsp;Update</a> -->
+						<button type="submit" class="btn btn-success"><i class="icon-edit icon-white"></i>&nbsp;Update</button>
+						<a href="/users" class="btn btn-inverse"><i class="icon-remove icon-white"></i>&nbsp;Cancel</a>
+					</div>
+				</div>	
+				<div class="msi-list details-view">
+					
+						<div class="alert alert-error">
+							<h4 class="alert-heading">Warning!</h4>
+							
+						</div>						
+						<div class="row">
+							<div class="span4">
+								First Name: 
+							</div>
+							
+							<div class="span4">
+								<%= f.text_field :first_name %>
+							</div>
+						</div>
+						<div class="row">
+							<div class="span4">
+								Last Name: 
+							</div>
+							<div class="span4">
+								<%= f.text_field :last_name %>
+							</div>
+						</div>
+						<div class="row">
+							<div class="span4">
+								Phone Number: 
+							</div>
+							<div class="span4">
+								<%= f.text_field :phone_number %>    
+							</div>
+						</div>
+						<div class="row">
+							<div class="span4">
+								username: 
+							</div>
+							<div class="span4">
+								<%= f.text_field :username %>
+							</div>
+						</div>
+						<div class="row">
+							<div class="span4">
+								Is Administrator? 
+							</div>
+							<div class="span4">
+								<%= f.check_box :is_admin %>
+							</div>
+						</div>
+						<div class="row sub-head">
+							<div class="span9">
+								Reset Password: <em class="note">If you would like to change the password type a new one, otherwise leave this blank</em>
+							</div>
+						</div>
+						<div class="row">
+							<div class="span4">
+								New Password: 
+							</div>
+							<div class="span4">
+								<%= f.password_field :clear_password %>
+							</div>
+						</div>
+						<div class="row">
+							<div class="span4">
+								Confirm New Password: 
+							</div>
+							<div class="span4">
+								<%= f.password_field :clear_password_confirmation %>
+							</div>
+						</div>
+					
+				</div>	<!-- END of msi-list div -->
+				<div class="row button-box bottom">
+					<div class="span9" style="text-align:right;">
+						<button type="submit" class="btn btn-success"><i class="icon-edit icon-white"></i>&nbsp;Update</button>
+						<a href="/users" class="btn btn-inverse"><i class="icon-remove icon-white"></i>&nbsp;Cancel</a>
+					</div>
+				</div>
+				</form>
+<% end %>

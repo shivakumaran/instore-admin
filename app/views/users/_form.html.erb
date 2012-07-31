@@ -1,0 +1,65 @@
+<%= form_for(@user) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name %>
+  </div>
+  <div class="field">
+    <%= f.label :username %><br />
+    <%= f.text_field :username %>
+  </div>
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :clear_password %>
+  </div>
+  <div class="field">
+    <%= f.label :confirm_password %><br />
+    <%= f.password_field :clear_password_confirmation %>
+  </div>  
+  <!--<div class="field"> -->
+    <%#= f.label :organisation_id %><!-- <br /> -->
+    <%#= f.number_field :organisation_id %>
+  <!-- </div> -->
+  <!--<div class="field"> -->
+    <%#= f.label :is_super_admin %><!-- <br /> -->
+    <%#= f.check_box :is_super_admin %>
+  <!-- </div> -->
+  <!-- <div class="field"> -->
+    <%#= f.label :is_admin %><!-- <br /> -->
+    <%#= f.check_box :is_admin %>
+  <!-- </div> -->
+  <div class="field">
+    <%= f.label :phone_number %><br />
+    <%= f.text_field :phone_number %>
+  </div>
+  <!-- <div class="field"> -->
+    <%#= f.label :disabled %><!-- <br /> -->
+    <%#= f.check_box :disabled %>
+  <!-- </div> -->
+  <!-- <div class="field"> -->
+    <%#= f.label :created_at %><!-- <br />  -->
+    <%#= f.datetime_select :created_at %>
+  <!-- </div>  -->
+  <!-- <div class="field">  -->
+    <%#= f.label :updated_at %><!-- <br /> -->
+    <%#= f.datetime_select :updated_at %>
+  <!-- </div> -->
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

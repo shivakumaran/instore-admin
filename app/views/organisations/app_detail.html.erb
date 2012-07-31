@@ -1,0 +1,46 @@
+<div class="row">
+	<div class="span9 msi-head"><h4>App Detail</h4></div>
+</div>
+<%= form_tag url_for(:action => 'update_app_detail'),:id => 'org-form' do %>
+
+<div class="row button-box top">
+	<div class="span9" style="text-align:right;">
+	
+			<button type="submit" class="btn btn-success"><i class="icon-edit icon-white"></i>&nbsp;Update</button>
+		
+		<a href="/organisations" class="btn btn-inverse"><i class="icon-remove icon-white"></i>&nbsp;Cancel</a>
+	</div>
+</div>	
+<div class="msi-list details-view">
+	<div class="alert alert-error" <% if @organisation.errors.any? %> style="display: block;" <% end %>>
+		<%= @organisation.errors.full_messages.join("<br/>").html_safe if @organisation.errors.any?%>
+	</div>	
+	
+	<div class="row">
+		<div class="span4">
+			Client id: 
+		</div>
+		
+		<div class="span4">
+			<%= text_field :organisation,:client_id %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+			Client secret: 
+		</div>
+		<div class="span4">
+			<%= text_field :organisation,:client_secret %>
+		</div>
+	</div>
+	
+</div>
+<div class="row button-box bottom">
+	<div class="span9" style="text-align:right;">
+		
+			<button type="submit" class="btn btn-success"><i class="icon-edit icon-white"></i>&nbsp;Update</button>
+
+		<a href="/users" class="btn btn-inverse"><i class="icon-remove icon-white"></i>&nbsp;Cancel</a>
+	</div>
+</div>
+<% end %>
